@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="./index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var xhr = new XMLHttpRequest();
+
+      function clickButton() {
+        xhr.open(
+          "GET",
+          "https://api.themoviedb.org/3/movie/popular?api_key=faa897df4d1e610773f0ce5d00ad1973&language=en-US&page=1"
+        );
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send();
+        xhr.onreadystatechange = function(e) {
+          console.log("XMLHttpRequest.DONE:", XMLHttpRequest.DONE);
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              console.log("서버와 통신이 정상적으로 되었습니다. ");
+              responseObject = JSON.parse(xhr.responseText);
+              results = responseObject.results;
+              results.map(result => {
+                $(".container").append(
+                  "<div>" +
+                    result.title +
+                    "</div><br>" +
+                    "<div>" +
+                    result.overview +
+                    "</div><br><br><br>"
+                );
+              });
+            } else {
+              console.log("Error occured!");
+            }
+          }
+        };
+      }
+    </script>
+    ajax tutorial
+    <br />
+    <button onclick="clickButton()">submit</button>
+    <br />
+    <div id="container" class="container"></div>
+  </body>
+</html>
