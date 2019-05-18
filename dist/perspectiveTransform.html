@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="/univ-school-web-P.e31bb0bc.js"></script>
     <title>Document</title>
     <style>html,
@@ -185,6 +186,12 @@
         -webkit-box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
         box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
+        z-index: 3;
+      }
+
+      .perspectiveTransform__container__body__img_container {
+        position: relative;
+        z-index: 4;
       }
 
       .perspectiveTransform__container__body__file_input_container_text_button {
@@ -195,6 +202,7 @@
       .perspectiveTransform__container__body_button {
         width: 150px;
         height: 50px;
+
         font-size: 30px;
         color: white;
         background-color: #3498db;
@@ -207,15 +215,35 @@
         cursor: pointer;
       }</style>
   </head>
-  <script>function previewFile() {
+  <script>var point1 = {
+  x: null,
+  y: null
+};
+var point2 = {
+  x: null,
+  y: null
+};
+var point3 = {
+  x: null,
+  y: null
+};
+var point4 = {
+  x: null,
+  y: null
+};
+
+function previewFile() {
   var preview = document.querySelector("img"); // img 태그를 선택한다.
 
+  var imageContainer = $(".perspectiveTransform__container__body__img_container");
   var file = document.querySelector("input[type=file]").files[0]; // input 타입이 file 인 태그에서의 첫번째 파일을 가져온다.
 
   var reader = new FileReader();
 
   reader.onloadend = function () {
     preview.src = reader.result; // base64 파일
+
+    imageContainer.background = reader.result;
   };
 
   if (file) {
@@ -225,7 +253,62 @@
   }
 }
 
-previewFile();</script>
+previewFile();
+
+function clickOnTheImage() {
+  if (point1.x == null && point1.y == null) {
+    point1.x = event.offsetX;
+    point1.y = event.offsetY;
+    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+      position: "absolute",
+      top: point1.y + "px",
+      left: point1.x + "px",
+      width: "10px",
+      height: "10px",
+      background: "white"
+    }).css("border-radius", "50%"));
+  } else if (point2.x == null && point2.y == null) {
+    point2.x = event.offsetX;
+    point2.y = event.offsetY;
+    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+      position: "absolute",
+      top: point2.y + "px",
+      left: point2.x + "px",
+      width: "10px",
+      height: "10px",
+      background: "white"
+    }).css("border-radius", "50%"));
+  } else if (point3.x == null && point3.y == null) {
+    point3.x = event.offsetX;
+    point3.y = event.offsetY;
+    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+      position: "absolute",
+      top: point3.y + "px",
+      left: point3.x + "px",
+      width: "10px",
+      height: "10px",
+      background: "white"
+    }).css("border-radius", "50%"));
+  } else if (point4.x == null && point4.y == null) {
+    point4.x = event.offsetX;
+    point4.y = event.offsetY;
+    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+      position: "absolute",
+      top: point4.y + "px",
+      left: point4.x + "px",
+      width: "10px",
+      height: "10px",
+      background: "white"
+    }).css("border-radius", "50%"));
+  } else {
+    alert("모든 점의 좌표를 클릭하였습니다. ");
+  }
+
+  console.log("point1:", point1);
+  console.log("point2:", point2);
+  console.log("point3:", point3);
+  console.log("point4:", point4);
+}</script>
   <body>
     <div class="perspectiveTransform__container">
       <div class="navigationContainer">
@@ -258,7 +341,10 @@ previewFile();</script>
             Click here to upload image!
           </div>
         </div>
-        <img src="#" class="perspectiveTransform__container__body__img" alt="preview image">
+        <div class="perspectiveTransform__container__body__img_container">
+          <img src="#" class="perspectiveTransform__container__body__img" alt="preview image" onclick="clickOnTheImage()">
+        </div>
+
         <button class="perspectiveTransform__container__body_button">
           NEXT
         </button>
