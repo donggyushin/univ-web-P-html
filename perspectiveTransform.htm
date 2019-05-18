@@ -257,8 +257,8 @@
               position: "absolute",
               top: point1.y + "px",
               left: point1.x + "px",
-              width: "10px",
-              height: "10px",
+              width: "5px",
+              height: "5px",
               background: "white"
             })
             .css("border-radius", "50%")
@@ -272,12 +272,13 @@
               position: "absolute",
               top: point2.y + "px",
               left: point2.x + "px",
-              width: "10px",
-              height: "10px",
+              width: "5px",
+              height: "5px",
               background: "white"
             })
             .css("border-radius", "50%")
         );
+        createLine(point1.x, point1.y, point2.x, point2.y, "line1");
       } else if (point3.x == null && point3.y == null) {
         point3.x = event.offsetX;
         point3.y = event.offsetY;
@@ -287,12 +288,14 @@
               position: "absolute",
               top: point3.y + "px",
               left: point3.x + "px",
-              width: "10px",
-              height: "10px",
+              width: "5px",
+              height: "5px",
               background: "white"
             })
             .css("border-radius", "50%")
         );
+
+        createLine(point2.x, point2.y, point3.x, point3.y, "line2");
       } else if (point4.x == null && point4.y == null) {
         point4.x = event.offsetX;
         point4.y = event.offsetY;
@@ -302,12 +305,14 @@
               position: "absolute",
               top: point4.y + "px",
               left: point4.x + "px",
-              width: "10px",
-              height: "10px",
+              width: "5px",
+              height: "5px",
               background: "white"
             })
             .css("border-radius", "50%")
         );
+        createLine(point3.x, point3.y, point4.x, point4.y, "line3");
+        createLine(point4.x, point4.y, point1.x, point1.y, "line4");
       } else {
         alert("모든 점의 좌표를 클릭하였습니다. ");
       }
@@ -316,6 +321,29 @@
       console.log("point2:", point2);
       console.log("point3:", point3);
       console.log("point4:", point4);
+    }
+
+    function createLine(x1, y1, x2, y2, lineId) {
+      // the distance between the two points(for the line div width)
+      distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+      // the mid-point between the two points, we use it as rotation center
+      xMid = (x1 + x2) / 2;
+      yMid = (y1 + y2) / 2;
+
+      // get the salope of the line between two points
+
+      salopeInRadian = Math.atan2(y1 - y2, x1 - x2);
+      salopeInDegree = (salopeInRadian * 180) / Math.PI;
+
+      // change the css of the line
+      line = document.getElementById(lineId);
+      line.style.width = distance + "px";
+      line.style.top = yMid + "px";
+      line.style.left = xMid - distance / 2 + "px";
+      line.style.border = "1px solid white";
+      line.style.transform = "rotate(" + salopeInDegree + "deg)";
+      line.style.position = "absolute";
     }
   </script>
   <body>
@@ -365,6 +393,10 @@
             alt="preview image"
             onclick="clickOnTheImage()"
           />
+          <div class="line" id="line1"></div>
+          <div class="line" id="line2"></div>
+          <div class="line" id="line3"></div>
+          <div class="line" id="line4"></div>
         </div>
 
         <button class="perspectiveTransform__container__body_button">
