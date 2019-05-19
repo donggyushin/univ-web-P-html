@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!-- for hot module reloading -->
     <script src="/univ-school-web-P.e31bb0bc.js"></script>
     <title>Document</title>
     <style>html,
@@ -186,12 +187,22 @@
         -webkit-box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
         -moz-box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
         box-shadow: 10px 10px 32px 0px rgba(0, 0, 0, 0.75);
-        z-index: 3;
+        /* z-index: 3; */
       }
 
       .perspectiveTransform__container__body__img_container {
         position: relative;
-        z-index: 4;
+        /* z-index: 4; */
+      }
+
+      .perspectiveTransform__container__body__img_container__canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid white;
+        background: transparent;
       }
 
       .perspectiveTransform__container__body__file_input_container_text_button {
@@ -259,54 +270,55 @@ function clickOnTheImage() {
   if (point1.x == null && point1.y == null) {
     point1.x = event.offsetX;
     point1.y = event.offsetY;
-    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+    $(".perspectiveTransform__container__body__img_container").append($("<div class=\"point1\" draggable=\"true\" ondrag=\"dragPoint(event)\" ondragend=\"dragEnd(event)\"></div>").css({
       position: "absolute",
-      top: point1.y + "px",
-      left: point1.x + "px",
-      width: "5px",
-      height: "5px",
+      top: point1.y - 5 + "px",
+      left: point1.x - 5 + "px",
+      width: "10px",
+      height: "10px",
       background: "white"
-    }).css("border-radius", "50%"));
+    }).css("border-radius", "50%").css("z-index", "3"));
   } else if (point2.x == null && point2.y == null) {
     point2.x = event.offsetX;
     point2.y = event.offsetY;
-    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+    $(".perspectiveTransform__container__body__img_container").append($("<div class=\"point2\" draggable=\"true\" ondrag=\"dragPoint(event)\" ondragend=\"dragEnd(event)\"></div>").css({
       position: "absolute",
-      top: point2.y + "px",
-      left: point2.x + "px",
-      width: "5px",
-      height: "5px",
+      top: point2.y - 5 + "px",
+      left: point2.x - 5 + "px",
+      width: "10px",
+      height: "10px",
       background: "white"
-    }).css("border-radius", "50%"));
+    }).css("border-radius", "50%").css("z-index", "3"));
     createLine(point1.x, point1.y, point2.x, point2.y, "line1");
   } else if (point3.x == null && point3.y == null) {
     point3.x = event.offsetX;
     point3.y = event.offsetY;
-    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+    $(".perspectiveTransform__container__body__img_container").append($("<div class=\"point3\" draggable=\"true\" ondrag=\"dragPoint(event)\" ondragend=\"dragEnd(event)\"></div>").css({
       position: "absolute",
-      top: point3.y + "px",
-      left: point3.x + "px",
-      width: "5px",
-      height: "5px",
+      top: point3.y - 5 + "px",
+      left: point3.x - 5 + "px",
+      width: "10px",
+      height: "10px",
       background: "white"
-    }).css("border-radius", "50%"));
+    }).css("border-radius", "50%").css("z-index", "3"));
     createLine(point2.x, point2.y, point3.x, point3.y, "line2");
   } else if (point4.x == null && point4.y == null) {
     point4.x = event.offsetX;
     point4.y = event.offsetY;
-    $(".perspectiveTransform__container__body__img_container").append($("<div></div>").css({
+    $(".perspectiveTransform__container__body__img_container").append($("<div class=\"point4\" draggable=\"true\" ondrag=\"dragPoint(event)\" ondragend=\"dragEnd(event)\"></div>").css({
       position: "absolute",
-      top: point4.y + "px",
-      left: point4.x + "px",
-      width: "5px",
-      height: "5px",
+      top: point4.y - 5 + "px",
+      left: point4.x - 5 + "px",
+      width: "10px",
+      height: "10px",
       background: "white"
-    }).css("border-radius", "50%"));
+    }).css("border-radius", "50%").css("z-index", "3"));
     createLine(point3.x, point3.y, point4.x, point4.y, "line3");
     createLine(point4.x, point4.y, point1.x, point1.y, "line4");
-  } else {
-    alert("모든 점의 좌표를 클릭하였습니다. ");
-  }
+  } // else {
+  //   alert("모든 점의 좌표를 클릭하였습니다. ");
+  // }
+
 
   console.log("point1:", point1);
   console.log("point2:", point2);
@@ -331,6 +343,91 @@ function createLine(x1, y1, x2, y2, lineId) {
   line.style.border = "1px solid white";
   line.style.transform = "rotate(" + salopeInDegree + "deg)";
   line.style.position = "absolute";
+}
+
+function dragPoint(e) {
+  if (point4.x == null) {
+    return;
+  }
+
+  var classname = e.target.className;
+  var point = e.target;
+  var pointsXOffSet = e.pageX;
+  var pointsYOffSet = e.pageY;
+  var container = $(".perspectiveTransform__container__body__img_container").offset();
+  point.style.background = "transparent";
+
+  if (pointsXOffSet == 0 || pointsYOffSet == 0) {
+    return;
+  }
+
+  var imageContainerLeftOffset = container.left;
+  var imageContainerTopOffset = container.top;
+  var relativeXOffset = pointsXOffSet - imageContainerLeftOffset;
+  var relativeYOffset = pointsYOffSet - imageContainerTopOffset;
+
+  if (classname == "point1") {
+    point1.x = relativeXOffset;
+    point1.y = relativeYOffset;
+    createLine(point1.x, point1.y, point2.x, point2.y, "line1");
+    createLine(point4.x, point4.y, point1.x, point1.y, "line4");
+  } else if (classname == "point2") {
+    point2.x = relativeXOffset;
+    point2.y = relativeYOffset;
+    createLine(point2.x, point2.y, point3.x, point3.y, "line2");
+    createLine(point1.x, point1.y, point2.x, point2.y, "line1");
+  } else if (classname == "point3") {
+    point3.x = relativeXOffset;
+    point3.y = relativeYOffset;
+    createLine(point3.x, point3.y, point4.x, point4.y, "line3");
+    createLine(point2.x, point2.y, point3.x, point3.y, "line2");
+  } else if (classname == "point4") {
+    point4.x = relativeXOffset;
+    point4.y = relativeYOffset;
+    createLine(point4.x, point4.y, point1.x, point1.y, "line4");
+    createLine(point3.x, point3.y, point4.x, point4.y, "line3");
+  }
+}
+
+function dragEnd(e) {
+  if (point4.x == null) {
+    return;
+  }
+
+  var point = e.target;
+  var classname = e.target.className;
+  var pointsXOffSet = e.pageX;
+  var pointsYOffSet = e.pageY;
+  var container = $(".perspectiveTransform__container__body__img_container").offset();
+  var imageContainerLeftOffset = container.left;
+  var imageContainerTopOffset = container.top;
+  var relativeXOffset = pointsXOffSet - imageContainerLeftOffset;
+  var relativeYOffset = pointsYOffSet - imageContainerTopOffset;
+  point.style.top = relativeYOffset - 5 + "px";
+  point.style.left = relativeXOffset - 5 + "px";
+  point.style.background = "white";
+
+  if (classname == "point1") {
+    point1.x = relativeXOffset;
+    point1.y = relativeYOffset;
+    createLine(point1.x, point1.y, point2.x, point2.y, "line1");
+    createLine(point4.x, point4.y, point1.x, point1.y, "line4");
+  } else if (classname == "point2") {
+    point2.x = relativeXOffset;
+    point2.y = relativeYOffset;
+    createLine(point2.x, point2.y, point3.x, point3.y, "line2");
+    createLine(point1.x, point1.y, point2.x, point2.y, "line1");
+  } else if (classname == "point3") {
+    point3.x = relativeXOffset;
+    point3.y = relativeYOffset;
+    createLine(point3.x, point3.y, point4.x, point4.y, "line3");
+    createLine(point2.x, point2.y, point3.x, point3.y, "line2");
+  } else if (classname == "point4") {
+    point4.x = relativeXOffset;
+    point4.y = relativeYOffset;
+    createLine(point4.x, point4.y, point1.x, point1.y, "line4");
+    createLine(point3.x, point3.y, point4.x, point4.y, "line3");
+  }
 }</script>
   <body>
     <div class="perspectiveTransform__container">
@@ -364,8 +461,9 @@ function createLine(x1, y1, x2, y2, lineId) {
             Click here to upload image!
           </div>
         </div>
-        <div class="perspectiveTransform__container__body__img_container">
-          <img src="#" class="perspectiveTransform__container__body__img" alt="preview image" onclick="clickOnTheImage()">
+        <div draggable="false" class="perspectiveTransform__container__body__img_container">
+          <img src="#" class="perspectiveTransform__container__body__img" alt="preview image" onclick="clickOnTheImage()" draggable="false">
+
           <div class="line" id="line1"></div>
           <div class="line" id="line2"></div>
           <div class="line" id="line3"></div>
