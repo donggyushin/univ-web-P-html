@@ -239,17 +239,20 @@
     var point2 = { x: null, y: null };
     var point3 = { x: null, y: null };
     var point4 = { x: null, y: null };
+    var file = null;
+    var base64 = null;
 
     function previewFile() {
       var preview = document.querySelector("img"); // img 태그를 선택한다.
       var imageContainer = $(
         ".perspectiveTransform__container__body__img_container"
       );
-      var file = document.querySelector("input[type=file]").files[0]; // input 타입이 file 인 태그에서의 첫번째 파일을 가져온다.
+      file = document.querySelector("input[type=file]").files[0]; // input 타입이 file 인 태그에서의 첫번째 파일을 가져온다.
       var reader = new FileReader();
 
       reader.onloadend = function() {
         preview.src = reader.result; // base64 파일
+        base64 = reader.result;
         imageContainer.background = reader.result;
       };
       if (file) {
@@ -455,12 +458,9 @@
         createLine(point4.x, point4.y, point1.x, point1.y, "line4");
         createLine(point3.x, point3.y, point4.x, point4.y, "line3");
       }
-      console.log(point1);
-      console.log(point2);
-      console.log(point3);
-      console.log(point4);
     }
   </script>
+
   <body>
     <div class="perspectiveTransform__container">
       <div class="navigationContainer">
@@ -492,6 +492,7 @@
         >
           <input
             type="file"
+            name="image"
             class="perspectiveTransform__container__body__file_input"
             onchange="previewFile()"
           />
