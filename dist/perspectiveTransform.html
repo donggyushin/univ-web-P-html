@@ -458,11 +458,14 @@ function dragEnd(e) {
       </div>
       <div class="perspectiveTransform__container__body">
         <div class="perspectiveTransform__container__body__file_input_container">
+        <form action="">
+
+
           <input type="file" name="image" class="perspectiveTransform__container__body__file_input" onchange="previewFile()">
           <div class="perspectiveTransform__container__body__file_input_container_text_button">
             Click here to upload image!
           </div>
-        </div>
+        </form></div>
         <div draggable="false" class="perspectiveTransform__container__body__img_container">
           <img src="#" class="perspectiveTransform__container__body__img" alt="preview image" onclick="clickOnTheImage()" draggable="false">
 
@@ -475,6 +478,7 @@ function dragEnd(e) {
         <button class="perspectiveTransform__container__body_button">
           NEXT
         </button>
+        
       </div>
     </div>
   </body>
