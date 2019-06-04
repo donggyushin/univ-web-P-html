@@ -109,6 +109,8 @@
             display: flex;
             flex-direction: column;
             font-family: "Nanum Gothic", sans-serif;
+            padding-bottom: 350px;
+            scroll-behavior: smooth;
         }
 
         /* from here */
@@ -169,15 +171,15 @@
         }
 
         .document__body__left {
-            width: 400px;
 
+            position: fixed;
             padding-left: 30px;
 
         }
 
         .document__body__right {
             width: 100%;
-
+            margin-left: 350px;
             padding: 20px;
 
         }
@@ -219,8 +221,8 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-top: 80px;
-            margin-bottom: 80px;
+            margin-top: 150px;
+            margin-bottom: 150px;
         }
 
         .division_line_container_item {
@@ -235,6 +237,13 @@
         /* to here, navigation bar css */
     </style>
 </head>
+<script>
+    function clickNavigation(scrolltop) {
+        $('html, body').animate({
+            scrollTop: scrolltop
+        }, 800)
+    }
+</script>
 
 <body>
     <div class="document">
@@ -264,10 +273,10 @@
         <div class="document__body">
             <div class="document__body__left">
                 <div class="document__body__left__navigation_box">
-                    <div class="document__body__left__navigation_box__item">
+                    <div onclick="clickNavigation(165)" class="document__body__left__navigation_box__item">
                         Introduce
                     </div>
-                    <div class="document__body__left__navigation_box__item">
+                    <div onclick="clickNavigation(726)" class="document__body__left__navigation_box__item">
                         Perspective Transform
                     </div>
                 </div>
@@ -293,10 +302,16 @@
                 <div class="document__body__right__normal_text">
                     First, click the "upload image button" then select some image you want to cut
                     <br><br>
-                    Second, Point 4 points that you want to cut from the image
+                    Second, Point 4 points that you want to cut from the image. Note that you have to point in a
+                    clockwise direction from the top left corner
                     <br><br>
-                    Third, You can see the original image on the left side, converted image on the right side. <br> <br>
-                    Also you can click the button to download image
+                    Third, Click the 'NEXT' button and waiting for your transformed image for a while.
+                    <br><br>
+                    Fourth, Original image on the left size, transformed image on the right side. You can download the
+                    image by clicking the 'DOWNLOAD' button. The file's name will be 'change_original_file_name'
+                </div>
+                <div class="division_line_container">
+                    <div class="division_line_container_item"></div>
                 </div>
             </div>
         </div>
