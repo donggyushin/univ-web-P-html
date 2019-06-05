@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>colorize page</title>
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="/univ-web-p.e31bb0bc.js"></script>
 </head>
@@ -237,15 +238,37 @@
     }</style>
 
 <body>
-    <script>function previewFile() {
+    <script>function sleep(ms) {
+  return new Promise(function (resolve) {
+    return setTimeout(resolve, ms);
+  });
+}
+
+function previewFile() {
   var preview = document.querySelector('img'); // selectes the query named img
 
   var file = document.querySelector('input[type=file]').files[0]; // sames as here
 
   var reader = new FileReader();
+  var stop = false;
 
   reader.onloadend = function () {
-    preview.src = reader.result; // base64
+    var imagestring = reader.result;
+    var extension = imagestring.substring(imagestring.indexOf('/') + 1, imagestring.indexOf(';'));
+    var base64str = reader.result.substr(19 + extension.length);
+    var decoded = atob(base64str);
+    var filesize = decoded.length;
+
+    if (filesize > 12582912) {
+      stop = true;
+      alert("You can't upload image size over than 12MB");
+    }
+
+    if (!stop) {
+      $(".colorize__button_container").attr('class', 'colorize__button_container');
+      $("#colorize__image_uploader").css('display', 'none');
+      preview.src = reader.result; // base64
+    }
   };
 
   if (file) {
@@ -253,9 +276,6 @@
   } else {
     preview.src = "";
   }
-
-  $(".colorize__button_container").attr('class', 'colorize__button_container');
-  $("#colorize__image_uploader").css('display', 'none');
 }</script>
     <div class="colorize">
         <div class="navigationContainer">
