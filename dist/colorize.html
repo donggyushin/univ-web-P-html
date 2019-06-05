@@ -235,6 +235,44 @@
 
     .invisible {
         opacity: 0;
+    }
+
+    .colorize__radio_buttons_container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-top: 60px;
+    }
+
+    .colorize__radio_buttons_container__input {
+        display: flex;
+        position: absolute;
+        width: 250px;
+        justify-content: space-between;
+        opacity: 0;
+    }
+
+    .colorize__radio_buttons_container__input>input:first-child {
+        width: 100px;
+        cursor: pointer;
+    }
+
+    .colorize__radio_buttons_container__input>input:nth-child(2) {
+        width: 80px;
+        cursor: pointer;
+    }
+
+    .colorize_radio_buttons_container_text {
+        display: flex;
+        width: 250px;
+        justify-content: space-between;
+    }
+
+    .checked {
+        font-weight: 900;
+        color: #74b9ff;
     }</style>
 
 <body>
@@ -267,6 +305,7 @@ function previewFile() {
     if (!stop) {
       $(".colorize__button_container").attr('class', 'colorize__button_container');
       $("#colorize__image_uploader").css('display', 'none');
+      $(".colorize__radio_buttons_container").attr('class', 'colorize__radio_buttons_container');
       preview.src = reader.result; // base64
     }
   };
@@ -276,6 +315,33 @@ function previewFile() {
   } else {
     preview.src = "";
   }
+}
+
+function clickRadioButton() {
+  // When req1 is checked
+  if (document.getElementById('req1').checked) {
+    console.log('req1 checked');
+    $("#stable").attr('class', '');
+    $("#dynamic").attr('class', 'checked');
+  } // When req2 is checked
+
+
+  if (document.getElementById('req2').checked) {
+    console.log('req2 checked');
+    $("#dynamic").attr("class", '');
+    $("#stable").attr('class', 'checked');
+  }
+}
+
+function clickNEXTbutton() {
+  console.log(!document.getElementById('req1').checked && !document.getElementById('req2').checked);
+
+  if (!document.getElementById('req1').checked && !document.getElementById('req2').checked) {
+    alert('You should select one of the modes');
+    return false;
+  }
+
+  return false;
 }</script>
     <div class="colorize">
         <div class="navigationContainer">
@@ -301,7 +367,7 @@ function previewFile() {
                 </div>
             </div>
         </div>
-        <form action="" method="post">
+        <form onsubmit="return clickNEXTbutton()" action="/WebProject/routes/colorizeImages2.jsp" enctype="multipart/form-data" method="post">
             <div id="colorize__image_uploader" class="colorize__image_uploader">
                 <input onchange="previewFile()" type="file" accept="image/*">
                 <div>
@@ -310,6 +376,16 @@ function previewFile() {
             </div>
             <div class="colorize__image_container">
                 <img src="" alt="">
+            </div>
+            <div class="colorize__radio_buttons_container invisible">
+                <div id="colorize__radio_buttons_container__input" class="colorize__radio_buttons_container__input">
+                    <input onclick="clickRadioButton()" id="req1" type="radio" value="0" name="req">
+                    <input onclick="clickRadioButton()" id="req2" type="radio" value="1" name="req">
+                </div>
+                <div class="colorize_radio_buttons_container_text">
+                    <div id="dynamic">Dynamic Mode</div>
+                    <div id="stable">Stable Mode</div>
+                </div>
             </div>
             <div class="colorize__button_container invisible">
                 <button>NEXT</button>
